@@ -1,0 +1,19 @@
+# Set to false to skip the run entirely. Other plugins can still register tests safely.
+enabled: true
+
+# What to do when a CRITICAL test fails:
+#   LOCKDOWN        Refuse player logins until an admin runs /preflight unlock (default).
+#   WARN            Log the failures and let players in.
+#   SHUTDOWN        Stop the server. Useful in CI and staging.
+#   DISABLE_PLUGIN  Disable the plugin that owns the failed test, plus any plugin that hard-depends
+#                   on it, then let players in. Failures in Preflight's own tests can't be pinned on
+#                   one plugin, so those still cause a LOCKDOWN.
+on-failure: LOCKDOWN
+
+# Stop the server after every run, pass or fail, so a CI job can finish and read report.xml.
+shutdown-after-run: false
+
+# Tests to skip, as owner:name. Use this for known false positives on your server,
+# for example a plugin that intentionally blocks mob spawning:
+#   - Preflight:entity-spawn
+skip-tests: []

@@ -1,0 +1,5 @@
+name: PreflightExample
+version: ${project.version}
+main: io.github.extantape.preflight.example.ExamplePlugin
+api-version: '1.21'
+softdepend: [Preflight]
