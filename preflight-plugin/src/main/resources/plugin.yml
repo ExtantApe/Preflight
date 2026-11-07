@@ -2,7 +2,7 @@ name: Preflight
 version: '${version}'
 main: com.extantape.preflight.plugin.PreflightPlugin
 api-version: '1.21'
-website: https://github.com/ExtantApe/preflight
+website: https://github.com/ExtantApe/Preflight
 description: Runs smoke tests at boot and holds players back if the server is broken.
 commands:
   preflight:
