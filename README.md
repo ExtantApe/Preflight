@@ -2,6 +2,8 @@
 
 A Spigot plugin that runs smoke tests when the server boots, before players can join. Other plugins can add their own tests. It also runs on Spigot forks such as Paper.
 
+**Status:** pre-release, version 0.1.0-SNAPSHOT. It has passed clean runs, lockdown, plugin disable, and shutdown tests on a live Paper 1.21.11 server, using a protocol bot for logins. Spigot itself and 26.x servers haven't been tested, and neither has a real plugin stack. There's no release yet, so build it yourself.
+
 ## What it does
 
 1. Other plugins register tests during `onEnable`.
@@ -14,13 +16,13 @@ Built-in tests check that every installed plugin enabled, then cover worlds, chu
 
 ## Build
 
-Requires Java 21 and Maven.
+Requires Java 21. The Gradle wrapper is included.
 
 ```bash
-mvn package
+./gradlew build
 ```
 
-Copy `preflight-plugin/target/Preflight-*.jar` to your server's `plugins/` folder.
+Copy `preflight-plugin/build/libs/Preflight-*.jar` to your server's `plugins/` folder.
 
 ## Configure
 
@@ -39,7 +41,7 @@ Use `skip-tests` to turn off false positives on your server, for example `Prefli
 
 ## Add tests to your plugin
 
-Depend on `preflight-api` with `provided` scope and add this to your `plugin.yml`:
+Add the `preflight-api` jar as a `compileOnly` dependency, then add this to your `plugin.yml`. Build the jar yourself for now. Releases will attach it on GitHub:
 
 ```yaml
 softdepend: [Preflight]
@@ -68,7 +70,7 @@ static void register(Plugin plugin) {
 }
 ```
 
-A test passes when it and all its `later` and `await` steps return without throwing. See [`preflight-example`](preflight-example/src/main/java/io/github/extantape/preflight/example/ExampleTests.java) for a complete plugin.
+A test passes when it and all its `later` and `await` steps return without throwing. See [`preflight-example`](preflight-example/src/main/java/com/extantape/preflight/example/ExampleTests.java) for a complete plugin.
 
 ## Use it in CI
 
@@ -86,10 +88,6 @@ Preflight deletes the old report at startup, so a run that didn't finish leaves 
 - **Tests fire real events.** Logging or Discord bridge plugins may react to activity in `preflight_test`, so test in staging where you can.
 - **Timeouts only cover waiting.** A test that blocks the main thread stalls the server until the watchdog steps in.
 - **Only startup runs tests.** `/reload` skips them.
-
-## Tested on
-
-Paper 1.21.11 (build 132) on Java 21. Spigot itself and 26.x servers haven't been tested yet, though the plugin only uses the Spigot API.
 
 ## License
 

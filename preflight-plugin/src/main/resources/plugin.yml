@@ -1,7 +1,8 @@
 name: Preflight
-version: ${project.version}
-main: io.github.extantape.preflight.plugin.PreflightPlugin
+version: '${version}'
+main: com.extantape.preflight.plugin.PreflightPlugin
 api-version: '1.21'
+website: https://github.com/ExtantApe/preflight
 description: Runs smoke tests at boot and holds players back if the server is broken.
 commands:
   preflight:
