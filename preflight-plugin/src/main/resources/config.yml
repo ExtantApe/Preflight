@@ -13,6 +13,9 @@ on-failure: LOCKDOWN
 # Stop the server after every run, pass or fail, so a CI job can finish and read report.xml.
 shutdown-after-run: false
 
+# A tool booting a throwaway copy can override the two settings above without editing this file:
+#   java -Dpreflight.on-failure=WARN -Dpreflight.shutdown-after-run=true -jar paper.jar
+
 # Tests to skip, as owner:name. Use this for known false positives on your server,
 # for example a plugin that intentionally blocks mob spawning:
 #   - Preflight:entity-spawn

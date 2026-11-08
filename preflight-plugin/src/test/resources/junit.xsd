@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The common JUnit XML shape that CI tools read (Jenkins, GitLab, Surefire-style): one testsuite with
+  optional properties, then test cases. Written for Preflight's tests; strict about structure so a
+  change that other tools would choke on fails here first.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="testsuite">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="properties" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="property" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:token" use="required"/>
+                  <xs:attribute name="value" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="testcase" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="skipped">
+                <xs:complexType>
+                  <xs:attribute name="message" type="xs:string"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="failure">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="type" type="xs:string"/>
+                      <xs:attribute name="message" type="xs:string"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="system-out" type="xs:string"/>
+              <xs:element name="system-err" type="xs:string"/>
+            </xs:choice>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="classname" type="xs:string" use="required"/>
+            <xs:attribute name="time" type="xs:decimal"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="tests" type="xs:nonNegativeInteger" use="required"/>
+      <xs:attribute name="failures" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="errors" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="skipped" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="time" type="xs:decimal"/>
+      <xs:attribute name="timestamp">
+        <xs:simpleType>
+          <xs:restriction base="xs:dateTime">
+            <xs:pattern value="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
