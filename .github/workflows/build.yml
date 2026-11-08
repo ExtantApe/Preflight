@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Leak check (emails and build output; private terms are only checked locally)
+        run: bash scripts/leak-check.sh
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
