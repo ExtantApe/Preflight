@@ -1,4 +1,4 @@
-val spigotApi = "org.spigotmc:spigot-api:1.21.11-R0.2-SNAPSHOT"
+val spigotApi = "org.spigotmc:spigot-api:26.1-R0.1-SNAPSHOT"
 
 dependencies {
     "implementation"(project(":preflight-api"))

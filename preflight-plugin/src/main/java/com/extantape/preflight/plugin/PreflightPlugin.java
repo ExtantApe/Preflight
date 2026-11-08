@@ -39,6 +39,9 @@ public final class PreflightPlugin extends JavaPlugin implements Listener {
     private static final String WORLD_MARKER = ".preflight-disposable";
     private static final int ARENA_SPACING = 64;
     private static final int ARENA_Y = 80;
+    private static final String FLAT_SETTINGS = """
+            {"layers":[{"block":"minecraft:bedrock","height":1},{"block":"minecraft:dirt","height":2},\
+            {"block":"minecraft:grass_block","height":1}],"biome":"minecraft:plains"}""";
 
     private enum Phase { TESTING, OPEN, LOCKED }
 
@@ -113,6 +116,8 @@ public final class PreflightPlugin extends JavaPlugin implements Listener {
     private World createTestWorld() throws IOException {
         World world = new WorldCreator(TEST_WORLD)
                 .type(WorldType.FLAT)
+                // Empty flat settings log "No key layers" on Paper 26.1.2, so spell the layers out.
+                .generatorSettings(FLAT_SETTINGS)
                 .generateStructures(false)
                 .createWorld();
         if (world == null) {

@@ -2,7 +2,7 @@
 
 A Spigot plugin that runs smoke tests when the server boots, before players can join. Other plugins can add their own tests. It also runs on Spigot forks such as Paper.
 
-**Status:** pre-release, version 0.1.0-SNAPSHOT. It has passed clean runs, lockdown, plugin disable, and shutdown tests on a live Paper 1.21.11 server, using a protocol bot for logins. Spigot itself and 26.x servers haven't been tested, and neither has a real plugin stack. There's no release yet, so build it yourself.
+**Status:** pre-release, version 0.1.0-SNAPSHOT. It needs Minecraft 26.1 or newer and Java 25; 1.21 isn't supported. It has passed clean runs, lockdown, plugin disable, and shutdown tests on throwaway Paper 26.1.2, 26.2 and 26.3 servers, using a protocol bot for logins. Spigot itself hasn't been tested, and neither has a real plugin stack. There's no release yet, so build it yourself.
 
 ## What it does
 
@@ -16,7 +16,7 @@ Built-in tests check that every installed plugin enabled, then cover worlds, chu
 
 ## Build
 
-Requires Java 21. The Gradle wrapper is included.
+Requires Java 25. The Gradle wrapper is included.
 
 ```bash
 ./gradlew build
