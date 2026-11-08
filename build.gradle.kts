@@ -4,7 +4,7 @@ subprojects {
     apply(plugin = "java")
 
     group = "com.extantape"
-    version = "0.1.0-SNAPSHOT"
+    version = "0.1.0"
 
     repositories {
         mavenCentral()
