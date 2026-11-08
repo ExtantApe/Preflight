@@ -1,4 +1,4 @@
-val spigotApi = "org.spigotmc:spigot-api:26.1-R0.1-SNAPSHOT"
+val paperApi = "io.papermc.paper:paper-api:26.1.2.build.74-stable"
 
 subprojects {
     apply(plugin = "java")
@@ -8,7 +8,7 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven("https://hub.spigotmc.org/nexus/content/groups/public/")
+        maven("https://repo.papermc.io/repository/maven-public/")
     }
 
     extensions.configure<JavaPluginExtension> {
@@ -16,7 +16,7 @@ subprojects {
     }
 
     dependencies {
-        "compileOnly"(spigotApi)
+        "compileOnly"(paperApi)
     }
 
     tasks.withType<JavaCompile>().configureEach {
@@ -27,7 +27,7 @@ subprojects {
     tasks.withType<ProcessResources>().configureEach {
         val props = mapOf("version" to project.version)
         inputs.properties(props)
-        filesMatching("plugin.yml") { expand(props) }
+        filesMatching("paper-plugin.yml") { expand(props) }
     }
 
     tasks.withType<Jar>().configureEach {

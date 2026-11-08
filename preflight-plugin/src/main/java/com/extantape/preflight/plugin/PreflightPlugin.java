@@ -1,6 +1,11 @@
 package com.extantape.preflight.plugin;
 
 import com.extantape.preflight.api.PreflightRegistry;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,13 +22,13 @@ import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -59,6 +64,8 @@ public final class PreflightPlugin extends JavaPlugin implements Listener {
         getServer().getServicesManager().register(PreflightRegistry.class, registry, this, ServicePriority.Normal);
         BuiltInTests.register(registry, this);
         getServer().getPluginManager().registerEvents(this, this);
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
+                event -> event.registrar().register(command(), "Shows startup test results or lifts a lockdown."));
     }
 
     /** Fires once every plugin has enabled and the default worlds exist. */
@@ -77,9 +84,9 @@ public final class PreflightPlugin extends JavaPlugin implements Listener {
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
         Phase current = phase;
         if (current != Phase.OPEN) {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, current == Phase.TESTING
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text(current == Phase.TESTING
                     ? "Server is still running startup checks. Try again shortly."
-                    : "Server failed its startup checks and is locked for maintenance.");
+                    : "Server failed its startup checks and is locked for maintenance."));
         }
     }
 
@@ -247,7 +254,7 @@ public final class PreflightPlugin extends JavaPlugin implements Listener {
         Map<String, Plugin> installed = Arrays.stream(getServer().getPluginManager().getPlugins())
                 .collect(Collectors.toMap(Plugin::getName, Function.identity()));
         Map<String, List<String>> depends = installed.values().stream()
-                .collect(Collectors.toMap(Plugin::getName, plugin -> plugin.getDescription().getDepend()));
+                .collect(Collectors.toMap(Plugin::getName, plugin -> plugin.getPluginMeta().getPluginDependencies()));
 
         for (String name : DisablePlan.order(targets, depends)) {
             Plugin plugin = installed.get(name);
@@ -264,36 +271,39 @@ public final class PreflightPlugin extends JavaPlugin implements Listener {
         }
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String sub = args.length == 0 ? "status" : args[0].toLowerCase(Locale.ROOT);
-        switch (sub) {
-            case "status" -> sendStatus(sender);
-            case "unlock" -> {
-                if (phase == Phase.LOCKED) {
-                    phase = Phase.OPEN;
-                    getLogger().warning(sender.getName() + " lifted the Preflight lockdown.");
-                    sender.sendMessage(ChatColor.GREEN + "Lockdown lifted. Players can log in.");
-                } else {
-                    sender.sendMessage(ChatColor.YELLOW + "The server isn't locked (" + phase + ").");
-                }
-            }
-            default -> {
-                return false;
-            }
-        }
-        return true;
+    /** /preflight [status|unlock], admin-only. Players without the permission don't see it. */
+    private LiteralCommandNode<CommandSourceStack> command() {
+        return Commands.literal("preflight")
+                .requires(source -> source.getSender().hasPermission("preflight.admin"))
+                .executes(context -> sendStatus(context.getSource().getSender()))
+                .then(Commands.literal("status")
+                        .executes(context -> sendStatus(context.getSource().getSender())))
+                .then(Commands.literal("unlock")
+                        .executes(context -> unlock(context.getSource().getSender())))
+                .build();
     }
 
-    private void sendStatus(CommandSender sender) {
+    private int unlock(CommandSender sender) {
+        if (phase == Phase.LOCKED) {
+            phase = Phase.OPEN;
+            getLogger().warning(sender.getName() + " lifted the Preflight lockdown.");
+            sender.sendMessage(Component.text("Lockdown lifted. Players can log in.", NamedTextColor.GREEN));
+        } else {
+            sender.sendMessage(Component.text("The server isn't locked (" + phase + ").", NamedTextColor.YELLOW));
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int sendStatus(CommandSender sender) {
         long failed = lastResults.stream().filter(TestResult::failed).count();
-        sender.sendMessage("Preflight: " + phase + ", " + (lastResults.size() - failed) + "/" + lastResults.size()
-                + " tests passed.");
+        sender.sendMessage(Component.text("Preflight: " + phase + ", " + (lastResults.size() - failed) + "/"
+                + lastResults.size() + " tests passed."));
         for (TestResult result : lastResults) {
             if (result.failed()) {
-                ChatColor color = result.blocking() ? ChatColor.RED : ChatColor.YELLOW;
-                sender.sendMessage(color + result.test().id() + ": " + result.message());
+                NamedTextColor color = result.blocking() ? NamedTextColor.RED : NamedTextColor.YELLOW;
+                sender.sendMessage(Component.text(result.test().id() + ": " + result.message(), color));
             }
         }
+        return Command.SINGLE_SUCCESS;
     }
 }

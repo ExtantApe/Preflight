@@ -6,6 +6,8 @@ import com.extantape.preflight.api.Severity;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -94,12 +96,13 @@ final class BuiltInTests {
             NamespacedKey key = new NamespacedKey(self, "probe");
             ItemStack item = new ItemStack(Material.DIAMOND_SWORD);
             ItemMeta meta = Check.notNull(item.getItemMeta(), "item meta");
-            meta.setDisplayName("probe");
+            meta.displayName(Component.text("probe"));
             meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, "value");
             Check.that(item.setItemMeta(meta), "setItemMeta was rejected");
 
             ItemMeta reread = Check.notNull(item.getItemMeta(), "re-read item meta");
-            Check.equal("probe", reread.getDisplayName(), "display name");
+            Check.equal("probe", PlainTextComponentSerializer.plainText().serialize(
+                    Check.notNull(reread.displayName(), "display name")), "display name");
             Check.equal("value", reread.getPersistentDataContainer().get(key, PersistentDataType.STRING), "PDC value");
         });
 
@@ -115,7 +118,7 @@ final class BuiltInTests {
         registry.register(self, "scoreboard", context -> {
             var manager = Check.notNull(Bukkit.getScoreboardManager(), "scoreboard manager");
             Objective objective = manager.getNewScoreboard()
-                    .registerNewObjective("preflight", Criteria.DUMMY, "Preflight");
+                    .registerNewObjective("preflight", Criteria.DUMMY, Component.text("Preflight"));
             objective.getScore("probe").setScore(7);
             Check.equal(7, objective.getScore("probe").getScore(), "score");
         });

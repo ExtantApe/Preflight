@@ -4,11 +4,6 @@ main: com.extantape.preflight.plugin.PreflightPlugin
 api-version: '26.1'
 website: https://github.com/ExtantApe/Preflight
 description: Runs smoke tests at boot and holds players back if the server is broken.
-commands:
-  preflight:
-    description: Shows test results or lifts a lockdown.
-    usage: /preflight <status|unlock>
-    permission: preflight.admin
 permissions:
   preflight.admin:
     description: Use /preflight
