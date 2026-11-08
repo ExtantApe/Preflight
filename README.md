@@ -2,7 +2,7 @@
 
 A Paper plugin that runs smoke tests when the server boots, before players can join. Other plugins can add their own tests.
 
-**Status:** early, version 0.2.0. It needs Minecraft 26.1 or newer and Java 25; 1.21 isn't supported. It has passed clean runs, lockdown, plugin disable, shutdown and broken-plugin report tests on throwaway Paper 26.1.2, 26.2 and 26.3 servers, using a protocol bot for logins. It's Paper-only, so it won't load on Spigot. A real plugin stack hasn't been tested.
+**Status:** early, version 0.3.0. It needs Minecraft 26.1 or newer and Java 25; 1.21 isn't supported. It has passed clean runs, lockdown, plugin disable, shutdown and broken-plugin report tests on throwaway Paper 26.1.2, 26.2 and 26.3 servers, using a protocol bot for logins. It's Paper-only, so it won't load on Spigot. The upgrade tool passed live checks, apply and restore on made-up servers on the same three versions. A real plugin stack hasn't been tested.
 
 ## What it does
 
@@ -16,7 +16,7 @@ Built-in tests check that every installed plugin enabled and that every plugin j
 
 ## Install
 
-Download `Preflight-0.2.0.jar` from [Releases](https://github.com/ExtantApe/Preflight/releases), put it in your server's `plugins/` folder and restart. Paper 26.1 or newer and Java 25 are required.
+Download `Preflight-0.3.0.jar` from [Releases](https://github.com/ExtantApe/Preflight/releases), put it in your server's `plugins/` folder and restart. Paper 26.1 or newer and Java 25 are required.
 
 ## Build
 
@@ -98,6 +98,22 @@ grep -q 'failures="0"' plugins/Preflight/report.xml
 Preflight deletes the old report at startup, so a run that didn't finish leaves no file and this command fails. You can also feed `report.xml` to any CI system that reads JUnit XML.
 
 The report also lists every plugin with its state, jar file, dependencies, failed checks and the server's own error line, including jars the server refused to load. [docs/report-format.md](docs/report-format.md) describes the fields.
+
+## Upgrade to a new Minecraft version
+
+`preflight-upgrade-0.3.0.jar`, on the same release page, is a command-line tool for a version upgrade. It boots a throwaway copy of your server on the new Paper jar with Preflight, then lists the plugins that won't start there and everything that needs them. With your yes, it switches them off on the real server, which must be stopped, after a restore point. It can switch each one back on later. It never deletes a jar: it renames it to `.jar.disabled`.
+
+```bash
+java -jar preflight-upgrade-0.3.0.jar check --server /path/to/server --paper paper-26.3-244.jar
+```
+
+You don't need Preflight installed on the server to use it. Some details:
+
+- The copy can't post to Discord or join a proxy.
+- The check stops if a plugin uses an outside database the copy would share.
+- Never-off rules can make the plan wait instead.
+
+[docs/upgrade.md](docs/upgrade.md) has every command and option.
 
 ## Limitations
 
