@@ -1,9 +1,9 @@
-val spigotApi = "org.spigotmc:spigot-api:26.1-R0.1-SNAPSHOT"
+val paperApi = "io.papermc.paper:paper-api:26.1.2.build.74-stable"
 
 dependencies {
     "implementation"(project(":preflight-api"))
 
-    "testImplementation"(spigotApi)
+    "testImplementation"(paperApi)
     "testImplementation"(platform("org.junit:junit-bom:5.11.4"))
     "testImplementation"("org.junit.jupiter:junit-jupiter")
     "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")

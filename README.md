@@ -1,8 +1,8 @@
 # Preflight
 
-A Spigot plugin that runs smoke tests when the server boots, before players can join. Other plugins can add their own tests. It also runs on Spigot forks such as Paper.
+A Paper plugin that runs smoke tests when the server boots, before players can join. Other plugins can add their own tests.
 
-**Status:** pre-release, version 0.1.0-SNAPSHOT. It needs Minecraft 26.1 or newer and Java 25; 1.21 isn't supported. It has passed clean runs, lockdown, plugin disable, and shutdown tests on throwaway Paper 26.1.2, 26.2 and 26.3 servers, using a protocol bot for logins. Spigot itself hasn't been tested, and neither has a real plugin stack. There's no release yet, so build it yourself.
+**Status:** pre-release, version 0.1.0-SNAPSHOT. It needs Minecraft 26.1 or newer and Java 25; 1.21 isn't supported. It has passed clean runs, lockdown, plugin disable, and shutdown tests on throwaway Paper 26.1.2, 26.2 and 26.3 servers, using a protocol bot for logins. It's Paper-only, so it won't load on Spigot. A real plugin stack hasn't been tested. There's no release yet, so build it yourself.
 
 ## What it does
 
@@ -41,11 +41,20 @@ Use `skip-tests` to turn off false positives on your server, for example `Prefli
 
 ## Add tests to your plugin
 
-Add the `preflight-api` jar as a `compileOnly` dependency, then add this to your `plugin.yml`. Build the jar yourself for now. Releases will attach it on GitHub:
+Add the `preflight-api` jar as a `compileOnly` dependency. Build the jar yourself for now. Releases will attach it on GitHub.
+
+In a `paper-plugin.yml`, declare Preflight as an optional dependency that loads first and joins your classpath:
 
 ```yaml
-softdepend: [Preflight]
+dependencies:
+  server:
+    Preflight:
+      load: BEFORE
+      required: false
+      join-classpath: true
 ```
+
+In an older `plugin.yml`, use `softdepend: [Preflight]` instead.
 
 Keep every reference to Preflight in its own class, so your plugin still loads when Preflight isn't installed:
 

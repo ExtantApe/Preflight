@@ -1,0 +1,11 @@
+name: PreflightExample
+version: '${version}'
+main: com.extantape.preflight.example.ExamplePlugin
+api-version: '26.1'
+dependencies:
+  server:
+    # Optional. When Preflight is installed it enables first, and its API classes join this classpath.
+    Preflight:
+      load: BEFORE
+      required: false
+      join-classpath: true
