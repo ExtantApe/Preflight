@@ -3,9 +3,11 @@ package com.extantape.preflight.plugin;
 import com.extantape.preflight.api.Check;
 import com.extantape.preflight.api.PreflightRegistry;
 import com.extantape.preflight.api.Severity;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -31,14 +33,33 @@ import org.bukkit.scoreboard.Objective;
 final class BuiltInTests {
     private BuiltInTests() {}
 
-    static void register(PreflightRegistry registry, Plugin self) {
-        registry.register(self, "all-plugins-enabled", context -> {
+    static void register(PreflightRegistry registry, Plugin self,
+            Supplier<PluginInventory.Snapshot> plugins) {
+        registry.register(self, ReportProperties.ALL_PLUGINS_ENABLED, context -> {
             List<String> disabled = Arrays.stream(Bukkit.getPluginManager().getPlugins())
                     .filter(plugin -> !plugin.isEnabled())
                     .map(Plugin::getName)
                     .toList();
             Check.that(disabled.isEmpty(), "Plugins failed to enable: " + disabled);
         });
+
+        // WARNING, so servers that ran 0.1.0 with a stray jar don't start locking down after an update.
+        registry.register(self, ReportProperties.PLUGINS_LOADED, Severity.WARNING,
+                PreflightRegistry.DEFAULT_TIMEOUT_TICKS, context -> {
+                    List<String> problems = new ArrayList<>();
+                    PluginInventory.Snapshot snapshot = plugins.get();
+                    if (!snapshot.unreadableJars().isEmpty()) {
+                        problems.add("couldn't read " + snapshot.unreadableJars());
+                    }
+                    for (PluginInventory.Status plugin : snapshot.plugins()) {
+                        if (plugin.state() == PluginInventory.State.NOT_LOADED) {
+                            problems.add(plugin.name() + " (" + String.join(", ", plugin.files()) + ") didn't load");
+                        } else if (!plugin.missingDepends().isEmpty()) {
+                            problems.add(plugin.name() + " needs " + plugin.missingDepends() + ", which isn't running");
+                        }
+                    }
+                    Check.that(problems.isEmpty(), String.join("; ", problems));
+                });
 
         registry.register(self, "worlds-loaded", context ->
                 Check.that(!Bukkit.getWorlds().isEmpty(), "No worlds are loaded"));

@@ -2,7 +2,7 @@
 
 A Paper plugin that runs smoke tests when the server boots, before players can join. Other plugins can add their own tests.
 
-**Status:** early, version 0.1.0. It needs Minecraft 26.1 or newer and Java 25; 1.21 isn't supported. It has passed clean runs, lockdown, plugin disable, and shutdown tests on throwaway Paper 26.1.2, 26.2 and 26.3 servers, using a protocol bot for logins. It's Paper-only, so it won't load on Spigot. A real plugin stack hasn't been tested.
+**Status:** early, version 0.2.0. It needs Minecraft 26.1 or newer and Java 25; 1.21 isn't supported. It has passed clean runs, lockdown, plugin disable, shutdown and broken-plugin report tests on throwaway Paper 26.1.2, 26.2 and 26.3 servers, using a protocol bot for logins. It's Paper-only, so it won't load on Spigot. A real plugin stack hasn't been tested.
 
 ## What it does
 
@@ -12,11 +12,11 @@ A Paper plugin that runs smoke tests when the server boots, before players can j
 4. It writes `plugins/Preflight/report.xml` (JUnit format) and deletes the test world.
 5. It applies the `on-failure` setting if a `CRITICAL` test failed. Otherwise it opens logins.
 
-Built-in tests check that every installed plugin enabled, then cover worlds, chunks, blocks, gravity, entities, the scheduler, events, item meta and persistent data, inventories, recipes, and scoreboards.
+Built-in tests check that every installed plugin enabled and that every plugin jar loaded with its hard dependencies running, then cover worlds, chunks, blocks, gravity, entities, the scheduler, events, item meta and persistent data, inventories, recipes, and scoreboards.
 
 ## Install
 
-Download `Preflight-0.1.0.jar` from [Releases](https://github.com/ExtantApe/Preflight/releases), put it in your server's `plugins/` folder and restart. Paper 26.1 or newer and Java 25 are required.
+Download `Preflight-0.2.0.jar` from [Releases](https://github.com/ExtantApe/Preflight/releases), put it in your server's `plugins/` folder and restart. Paper 26.1 or newer and Java 25 are required.
 
 ## Build
 
@@ -40,6 +40,8 @@ Edit `plugins/Preflight/config.yml`:
 | `DISABLE_PLUGIN` | Disables the failing plugin and anything that hard-depends on it. Failures in Preflight's own tests still cause a lockdown |
 
 Use `skip-tests` to turn off false positives on your server, for example `Preflight:entity-spawn` if a plugin deliberately blocks mob spawning.
+
+To override `on-failure` or `shutdown-after-run` without editing the file, for example on a throwaway copy of a server, start Java with `-Dpreflight.on-failure=WARN` or `-Dpreflight.shutdown-after-run=true`.
 
 `/preflight status` shows the results. It requires `preflight.admin`, which defaults to ops.
 
@@ -94,6 +96,8 @@ grep -q 'failures="0"' plugins/Preflight/report.xml
 ```
 
 Preflight deletes the old report at startup, so a run that didn't finish leaves no file and this command fails. You can also feed `report.xml` to any CI system that reads JUnit XML.
+
+The report also lists every plugin with its state, jar file, dependencies, failed checks and the server's own error line, including jars the server refused to load. [docs/report-format.md](docs/report-format.md) describes the fields.
 
 ## Limitations
 

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Preflight" tests="17" failures="2" errors="0" skipped="1" time="3.211" timestamp="2026-11-08T15:10:24">
+  <properties>
+    <property name="preflight.report.format" value="1"/>
+    <property name="preflight.version" value="0.2.0"/>
+    <property name="preflight.finished-at" value="2026-11-08T15:10:24Z"/>
+    <property name="preflight.server-checks" value="passed"/>
+    <property name="preflight.on-failure" value="WARN"/>
+    <property name="preflight.unreadable-jars" value="Corrupt.jar"/>
+    <property name="preflight.other-jars" value="some-library.jar"/>
+    <property name="server.brand" value="Paper"/>
+    <property name="server.version" value="26.3-244-35a2d15 (MC: 26.3)"/>
+    <property name="server.minecraft-version" value="26.3"/>
+    <property name="server.build" value="244"/>
+    <property name="plugin.BadApi.state" value="not-loaded"/>
+    <property name="plugin.BadApi.version" value="1"/>
+    <property name="plugin.BadApi.files" value="BadApi.jar"/>
+    <property name="plugin.BadApi.descriptor" value="plugin.yml"/>
+    <property name="plugin.BadApi.depends" value=""/>
+    <property name="plugin.BadApi.soft-depends" value=""/>
+    <property name="plugin.BadApi.missing-depends" value=""/>
+    <property name="plugin.BadApi.required-by" value="NeedsBadApi"/>
+    <property name="plugin.BadApi.failed-tests" value="Preflight:plugins-loaded"/>
+    <property name="plugin.BadApi.reason" value="Could not load plugin &apos;BadApi.jar&apos; in folder &apos;plugins&apos;: org.bukkit.plugin.InvalidPluginException: Unsupported API version 99.0"/>
+    <property name="plugin.BrokenEnable.state" value="disabled"/>
+    <property name="plugin.BrokenEnable.version" value="1"/>
+    <property name="plugin.BrokenEnable.files" value="BrokenEnable.jar"/>
+    <property name="plugin.BrokenEnable.descriptor" value="plugin.yml"/>
+    <property name="plugin.BrokenEnable.depends" value=""/>
+    <property name="plugin.BrokenEnable.soft-depends" value=""/>
+    <property name="plugin.BrokenEnable.missing-depends" value=""/>
+    <property name="plugin.BrokenEnable.required-by" value=""/>
+    <property name="plugin.BrokenEnable.failed-tests" value="Preflight:all-plugins-enabled"/>
+    <property name="plugin.BrokenEnable.reason" value="Error occurred while enabling BrokenEnable v1 (Is it up to date?): java.lang.IllegalStateException: deliberately broken"/>
+    <property name="plugin.FailingTests.state" value="enabled"/>
+    <property name="plugin.FailingTests.version" value="1"/>
+    <property name="plugin.FailingTests.files" value="FailingTests.jar"/>
+    <property name="plugin.FailingTests.descriptor" value="plugin.yml"/>
+    <property name="plugin.FailingTests.depends" value=""/>
+    <property name="plugin.FailingTests.soft-depends" value="Preflight"/>
+    <property name="plugin.FailingTests.missing-depends" value=""/>
+    <property name="plugin.FailingTests.required-by" value="PaperDependsOnFailing"/>
+    <property name="plugin.FailingTests.failed-tests" value="FailingTests:always-fails"/>
+    <property name="plugin.MissingDep.state" value="not-loaded"/>
+    <property name="plugin.MissingDep.version" value="1"/>
+    <property name="plugin.MissingDep.files" value="MissingDep.jar"/>
+    <property name="plugin.MissingDep.descriptor" value="plugin.yml"/>
+    <property name="plugin.MissingDep.depends" value="NotInstalled"/>
+    <property name="plugin.MissingDep.soft-depends" value=""/>
+    <property name="plugin.MissingDep.missing-depends" value="NotInstalled"/>
+    <property name="plugin.MissingDep.required-by" value=""/>
+    <property name="plugin.MissingDep.failed-tests" value="Preflight:plugins-loaded"/>
+    <property name="plugin.MissingDep.reason" value="Could not load &apos;plugins/MissingDep.jar&apos; in &apos;plugins&apos;: org.bukkit.plugin.UnknownDependencyException: Unknown/missing dependency plugins: [NotInstalled]. Please download and install these plugins to run &apos;MissingDep&apos;."/>
+    <property name="plugin.NeedsBadApi.state" value="enabled"/>
+    <property name="plugin.NeedsBadApi.version" value="1"/>
+    <property name="plugin.NeedsBadApi.files" value="NeedsBadApi.jar"/>
+    <property name="plugin.NeedsBadApi.descriptor" value="plugin.yml"/>
+    <property name="plugin.NeedsBadApi.depends" value="BadApi"/>
+    <property name="plugin.NeedsBadApi.soft-depends" value=""/>
+    <property name="plugin.NeedsBadApi.missing-depends" value="BadApi"/>
+    <property name="plugin.NeedsBadApi.required-by" value=""/>
+    <property name="plugin.NeedsBadApi.failed-tests" value="Preflight:plugins-loaded"/>
+    <property name="plugin.NoMainClass.state" value="not-loaded"/>
+    <property name="plugin.NoMainClass.version" value="1"/>
+    <property name="plugin.NoMainClass.files" value="NoMainClass.jar"/>
+    <property name="plugin.NoMainClass.descriptor" value="paper-plugin.yml"/>
+    <property name="plugin.NoMainClass.depends" value=""/>
+    <property name="plugin.NoMainClass.soft-depends" value=""/>
+    <property name="plugin.NoMainClass.missing-depends" value=""/>
+    <property name="plugin.NoMainClass.required-by" value=""/>
+    <property name="plugin.NoMainClass.failed-tests" value="Preflight:plugins-loaded"/>
+    <property name="plugin.NoMainClass.reason" value="Could not load plugin &apos;NoMainClass.jar&apos; in folder &apos;plugins&apos;: java.lang.ClassNotFoundException: fx.DoesNotExist"/>
+    <property name="plugin.PaperDependsOnFailing.state" value="enabled"/>
+    <property name="plugin.PaperDependsOnFailing.version" value="1"/>
+    <property name="plugin.PaperDependsOnFailing.files" value="PaperDependsOnFailing.jar"/>
+    <property name="plugin.PaperDependsOnFailing.descriptor" value="paper-plugin.yml"/>
+    <property name="plugin.PaperDependsOnFailing.depends" value="FailingTests"/>
+    <property name="plugin.PaperDependsOnFailing.soft-depends" value=""/>
+    <property name="plugin.PaperDependsOnFailing.missing-depends" value=""/>
+    <property name="plugin.PaperDependsOnFailing.required-by" value=""/>
+    <property name="plugin.PaperDependsOnFailing.failed-tests" value=""/>
+    <property name="plugin.Preflight.state" value="enabled"/>
+    <property name="plugin.Preflight.version" value="0.2.0"/>
+    <property name="plugin.Preflight.files" value="Preflight-0.2.0.jar"/>
+    <property name="plugin.Preflight.descriptor" value="paper-plugin.yml"/>
+    <property name="plugin.Preflight.depends" value=""/>
+    <property name="plugin.Preflight.soft-depends" value=""/>
+    <property name="plugin.Preflight.missing-depends" value=""/>
+    <property name="plugin.Preflight.required-by" value=""/>
+    <property name="plugin.Preflight.failed-tests" value=""/>
+    <property name="plugin.PreflightExample.state" value="enabled"/>
+    <property name="plugin.PreflightExample.version" value="0.2.0"/>
+    <property name="plugin.PreflightExample.files" value="PreflightExample-0.2.0.jar"/>
+    <property name="plugin.PreflightExample.descriptor" value="paper-plugin.yml"/>
+    <property name="plugin.PreflightExample.depends" value=""/>
+    <property name="plugin.PreflightExample.soft-depends" value="Preflight"/>
+    <property name="plugin.PreflightExample.missing-depends" value=""/>
+    <property name="plugin.PreflightExample.required-by" value=""/>
+    <property name="plugin.PreflightExample.failed-tests" value=""/>
+    <property name="test.Preflight:all-plugins-enabled.result" value="failed"/>
+    <property name="test.Preflight:all-plugins-enabled.severity" value="critical"/>
+    <property name="test.Preflight:all-plugins-enabled.message" value="AssertionError: Plugins failed to enable: [BrokenEnable]"/>
+    <property name="test.Preflight:plugins-loaded.result" value="failed"/>
+    <property name="test.Preflight:plugins-loaded.severity" value="warning"/>
+    <property name="test.Preflight:plugins-loaded.message" value="AssertionError: couldn&apos;t read [Corrupt.jar]; BadApi (BadApi.jar) didn&apos;t load; MissingDep (MissingDep.jar) didn&apos;t load; NeedsBadApi needs [BadApi], which isn&apos;t running; NoMainClass (NoMainClass.jar) didn&apos;t load"/>
+    <property name="test.Preflight:worlds-loaded.result" value="passed"/>
+    <property name="test.Preflight:worlds-loaded.severity" value="critical"/>
+    <property name="test.Preflight:chunk-load.result" value="passed"/>
+    <property name="test.Preflight:chunk-load.severity" value="critical"/>
+    <property name="test.Preflight:block-set-get.result" value="passed"/>
+    <property name="test.Preflight:block-set-get.severity" value="critical"/>
+    <property name="test.Preflight:block-gravity.result" value="passed"/>
+    <property name="test.Preflight:block-gravity.severity" value="warning"/>
+    <property name="test.Preflight:scheduler.result" value="passed"/>
+    <property name="test.Preflight:scheduler.severity" value="critical"/>
+    <property name="test.Preflight:event-bus.result" value="passed"/>
+    <property name="test.Preflight:event-bus.severity" value="critical"/>
+    <property name="test.Preflight:item-meta-and-pdc.result" value="passed"/>
+    <property name="test.Preflight:item-meta-and-pdc.severity" value="critical"/>
+    <property name="test.Preflight:inventory.result" value="passed"/>
+    <property name="test.Preflight:inventory.severity" value="critical"/>
+    <property name="test.Preflight:recipes.result" value="passed"/>
+    <property name="test.Preflight:recipes.severity" value="critical"/>
+    <property name="test.Preflight:scoreboard.result" value="passed"/>
+    <property name="test.Preflight:scoreboard.severity" value="critical"/>
+    <property name="test.FailingTests:always-fails.result" value="failed"/>
+    <property name="test.FailingTests:always-fails.severity" value="critical"/>
+    <property name="test.FailingTests:always-fails.message" value="AssertionError: deliberate failure"/>
+    <property name="test.PreflightExample:data-folder.result" value="passed"/>
+    <property name="test.PreflightExample:data-folder.severity" value="critical"/>
+    <property name="test.PreflightExample:block-survives-a-second.result" value="passed"/>
+    <property name="test.PreflightExample:block-survives-a-second.severity" value="critical"/>
+    <property name="test.PreflightExample:async-backend.result" value="passed"/>
+    <property name="test.PreflightExample:async-backend.severity" value="warning"/>
+    <property name="test.Preflight:entity-spawn.result" value="skipped"/>
+    <property name="test.Preflight:entity-spawn.severity" value="warning"/>
+  </properties>
+  <testcase classname="Preflight" name="all-plugins-enabled" time="0.001">
+    <failure type="FAILED" message="AssertionError: Plugins failed to enable: [BrokenEnable]">AssertionError: Plugins failed to enable: [BrokenEnable]
+java.lang.AssertionError: Plugins failed to enable: [BrokenEnable]
+	at Preflight-0.2.0.jar//com.extantape.preflight.api.Check.that(Check.java:11)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.BuiltInTests.lambda$register$0(BuiltInTests.java:43)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner$Execution.lambda$begin$1(TestRunner.java:73)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner$Execution.invoke(TestRunner.java:130)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner$Execution.begin(TestRunner.java:73)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner.runNext(TestRunner.java:51)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner.start(TestRunner.java:42)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.PreflightPlugin.runTests(PreflightPlugin.java:135)
+	at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78)
+	at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474)
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1263)
+	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:299)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+</failure>
+  </testcase>
+  <testcase classname="Preflight" name="plugins-loaded" time="0.005">
+    <system-err>AssertionError: couldn&apos;t read [Corrupt.jar]; BadApi (BadApi.jar) didn&apos;t load; MissingDep (MissingDep.jar) didn&apos;t load; NeedsBadApi needs [BadApi], which isn&apos;t running; NoMainClass (NoMainClass.jar) didn&apos;t load
+java.lang.AssertionError: couldn&apos;t read [Corrupt.jar]; BadApi (BadApi.jar) didn&apos;t load; MissingDep (MissingDep.jar) didn&apos;t load; NeedsBadApi needs [BadApi], which isn&apos;t running; NoMainClass (NoMainClass.jar) didn&apos;t load
+	at Preflight-0.2.0.jar//com.extantape.preflight.api.Check.that(Check.java:11)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.BuiltInTests.lambda$register$2(BuiltInTests.java:61)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner$Execution.lambda$begin$1(TestRunner.java:73)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner$Execution.invoke(TestRunner.java:130)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner$Execution.begin(TestRunner.java:73)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner.runNext(TestRunner.java:51)
+	at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78)
+	at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474)
+	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1751)
+	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1604)
+	at net.minecraft.server.dedicated.DedicatedServer.tickServer(DedicatedServer.java:404)
+	at net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1662)
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1332)
+	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:299)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+</system-err>
+  </testcase>
+  <testcase classname="Preflight" name="worlds-loaded" time="0.0"/>
+  <testcase classname="Preflight" name="chunk-load" time="0.05"/>
+  <testcase classname="Preflight" name="block-set-get" time="0.118"/>
+  <testcase classname="Preflight" name="block-gravity" time="1.855"/>
+  <testcase classname="Preflight" name="scheduler" time="0.078"/>
+  <testcase classname="Preflight" name="event-bus" time="0.0"/>
+  <testcase classname="Preflight" name="item-meta-and-pdc" time="0.06"/>
+  <testcase classname="Preflight" name="inventory" time="0.006"/>
+  <testcase classname="Preflight" name="recipes" time="0.001"/>
+  <testcase classname="Preflight" name="scoreboard" time="0.003"/>
+  <testcase classname="FailingTests" name="always-fails" time="0.0">
+    <failure type="FAILED" message="AssertionError: deliberate failure">AssertionError: deliberate failure
+java.lang.AssertionError: deliberate failure
+	at Preflight-0.2.0.jar//com.extantape.preflight.api.Check.that(Check.java:11)
+	at FailingTests.jar//fx.FailingTests.lambda$onEnable$0(FailingTests.java:1)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner$Execution.lambda$begin$1(TestRunner.java:73)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner$Execution.invoke(TestRunner.java:130)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner$Execution.begin(TestRunner.java:73)
+	at Preflight-0.2.0.jar//com.extantape.preflight.plugin.TestRunner.runNext(TestRunner.java:51)
+	at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78)
+	at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474)
+	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1751)
+	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1604)
+	at net.minecraft.server.dedicated.DedicatedServer.tickServer(DedicatedServer.java:404)
+	at net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1662)
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1332)
+	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:299)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+</failure>
+  </testcase>
+  <testcase classname="PreflightExample" name="data-folder" time="0.0"/>
+  <testcase classname="PreflightExample" name="block-survives-a-second" time="0.994"/>
+  <testcase classname="PreflightExample" name="async-backend" time="0.04"/>
+  <testcase classname="Preflight" name="entity-spawn" time="0.0">
+    <skipped message="Skipped by skip-tests"/>
+  </testcase>
+</testsuite>
