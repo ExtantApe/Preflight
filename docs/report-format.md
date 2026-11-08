@@ -2,7 +2,7 @@
 
 Preflight writes `plugins/Preflight/report.xml` after each startup run. It's ordinary JUnit XML, so CI systems can read it as test results. Since 0.2.0 it also has a `<properties>` block, for tools that need to act on a run. One example is an upgrade helper that boots a copy of a server on a new Minecraft version and suggests which plugins to switch off.
 
-This page describes format 1.
+This page describes format 1. [samples/report-26.3-broken-plugins.xml](samples/report-26.3-broken-plugins.xml) is a real report from a Paper 26.3 test boot with deliberately broken plugins of each kind.
 
 ## Shape
 
