@@ -26,10 +26,16 @@ jobs:
             exit 1
           fi
       - run: ./gradlew build
+      - name: Write a .sha256 next to each jar
+        run: |
+          for jar in preflight-plugin/build/libs/*.jar preflight-api/build/libs/*.jar preflight-upgrade/build/libs/*.jar; do
+            (cd "$(dirname "$jar")" && sha256sum "$(basename "$jar")" > "$(basename "$jar").sha256")
+          done
       - name: Publish the jars to GitHub Releases
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "$GITHUB_REF_NAME" --generate-notes \
-            preflight-plugin/build/libs/*.jar \
-            preflight-api/build/libs/*.jar
+            preflight-plugin/build/libs/*.jar preflight-plugin/build/libs/*.sha256 \
+            preflight-api/build/libs/*.jar preflight-api/build/libs/*.sha256 \
+            preflight-upgrade/build/libs/*.jar preflight-upgrade/build/libs/*.sha256

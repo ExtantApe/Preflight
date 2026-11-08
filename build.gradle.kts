@@ -4,7 +4,7 @@ subprojects {
     apply(plugin = "java")
 
     group = "com.extantape"
-    version = "0.2.0"
+    version = "0.3.0"
 
     repositories {
         mavenCentral()
@@ -15,8 +15,11 @@ subprojects {
         toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     }
 
-    dependencies {
-        "compileOnly"(paperApi)
+    // The upgrade CLI runs outside a server, so it mustn't see Bukkit classes at all.
+    if (name != "preflight-upgrade") {
+        dependencies {
+            "compileOnly"(paperApi)
+        }
     }
 
     tasks.withType<JavaCompile>().configureEach {
