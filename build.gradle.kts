@@ -1,4 +1,4 @@
-val spigotApi = "org.spigotmc:spigot-api:1.21.11-R0.2-SNAPSHOT"
+val spigotApi = "org.spigotmc:spigot-api:26.1-R0.1-SNAPSHOT"
 
 subprojects {
     apply(plugin = "java")
@@ -12,7 +12,7 @@ subprojects {
     }
 
     extensions.configure<JavaPluginExtension> {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     }
 
     dependencies {
@@ -21,7 +21,7 @@ subprojects {
 
     tasks.withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8"
-        options.release.set(21)
+        options.release.set(25)
     }
 
     tasks.withType<ProcessResources>().configureEach {
