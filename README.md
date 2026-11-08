@@ -2,7 +2,7 @@
 
 A Paper plugin that runs smoke tests when the server boots, before players can join. Other plugins can add their own tests.
 
-**Status:** pre-release, version 0.1.0-SNAPSHOT. It needs Minecraft 26.1 or newer and Java 25; 1.21 isn't supported. It has passed clean runs, lockdown, plugin disable, and shutdown tests on throwaway Paper 26.1.2, 26.2 and 26.3 servers, using a protocol bot for logins. It's Paper-only, so it won't load on Spigot. A real plugin stack hasn't been tested. There's no release yet, so build it yourself.
+**Status:** early, version 0.1.0. It needs Minecraft 26.1 or newer and Java 25; 1.21 isn't supported. It has passed clean runs, lockdown, plugin disable, and shutdown tests on throwaway Paper 26.1.2, 26.2 and 26.3 servers, using a protocol bot for logins. It's Paper-only, so it won't load on Spigot. A real plugin stack hasn't been tested.
 
 ## What it does
 
@@ -14,6 +14,10 @@ A Paper plugin that runs smoke tests when the server boots, before players can j
 
 Built-in tests check that every installed plugin enabled, then cover worlds, chunks, blocks, gravity, entities, the scheduler, events, item meta and persistent data, inventories, recipes, and scoreboards.
 
+## Install
+
+Download `Preflight-0.1.0.jar` from [Releases](https://github.com/ExtantApe/Preflight/releases), put it in your server's `plugins/` folder and restart. Paper 26.1 or newer and Java 25 are required.
+
 ## Build
 
 Requires Java 25. The Gradle wrapper is included.
@@ -22,7 +26,7 @@ Requires Java 25. The Gradle wrapper is included.
 ./gradlew build
 ```
 
-Copy `preflight-plugin/build/libs/Preflight-*.jar` to your server's `plugins/` folder.
+The plugin jar is `preflight-plugin/build/libs/Preflight-*.jar`.
 
 ## Configure
 
@@ -41,7 +45,7 @@ Use `skip-tests` to turn off false positives on your server, for example `Prefli
 
 ## Add tests to your plugin
 
-Add the `preflight-api` jar as a `compileOnly` dependency. Build the jar yourself for now. Releases will attach it on GitHub.
+Add the `preflight-api` jar as a `compileOnly` dependency. Each release attaches it on GitHub.
 
 In a `paper-plugin.yml`, declare Preflight as an optional dependency that loads first and joins your classpath:
 
