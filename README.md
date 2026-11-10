@@ -115,6 +115,10 @@ You don't need Preflight installed on the server to use it. Some details:
 
 [docs/upgrade.md](docs/upgrade.md) has every command and option.
 
+## Testing
+
+Unit tests run with `./gradlew build`. The live scenarios in `test/live/run.mjs` boot throwaway Paper servers on 127.0.0.1 with two test-only plugins and a bot that only logs in: a clean run, logins held during the tests, a lockdown and `/preflight unlock`, `DISABLE_PLUGIN`, and `SHUTDOWN`. Instructions are at the top of that file.
+
 ## Limitations
 
 - **No simulated players.** The Bukkit API can't create one, so join, chat, and player-action flows aren't covered.

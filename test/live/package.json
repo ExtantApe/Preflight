@@ -1,0 +1,7 @@
+{
+  "name": "preflight-live-tests",
+  "private": true,
+  "type": "module",
+  "description": "Preflight's live scenarios on throwaway Paper servers. Test-only.",
+  "dependencies": { "mineflayer": "^4.39.0" }
+}
