@@ -1,0 +1,6 @@
+name: PfFixture
+version: '0.0.0-test'
+main: com.extantape.preflight.livetest.FixturePlugin
+api-version: '26.1'
+softdepend: [Preflight]
+description: Test-only fixture for Preflight's live scenarios. Never install it on a real server.

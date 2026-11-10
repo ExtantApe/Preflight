@@ -4,3 +4,4 @@ run/
 .idea/
 *.iml
 .DS_Store
+test/live/node_modules/

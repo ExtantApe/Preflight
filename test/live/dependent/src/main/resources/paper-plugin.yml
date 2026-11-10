@@ -1,0 +1,10 @@
+name: PfDependent
+version: '${version}'
+main: com.extantape.preflight.livetest.DependentPlugin
+api-version: '26.1'
+description: Test-only fixture for Preflight's live scenarios. Never install it on a real server.
+dependencies:
+  server:
+    PfFixture:
+      load: BEFORE
+      required: true
