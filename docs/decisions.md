@@ -15,7 +15,7 @@ Decisions for this repo, newest first, so later work follows them without asking
   - nothing offered on a missing or unknown report
   - never-off rules in the same file format
 
-**Choices made while building it,** to be revisited if the owner disagrees:
+**Choices made while building it,** confirmed by the owner on 2026-11-11 (N166, "Keep all seven (Recommended)", relayed verbatim by Helm):
 
 - **A shared outside database stops the check by default.** `--allow-shared-database` lets it run. Leaf Juice only warned, but the copy would write to the live database.
 - **The restore point covers plugin jars only,** because they're all the tool changes. The docs and the `apply` output say to take a full backup before the upgrade itself.
