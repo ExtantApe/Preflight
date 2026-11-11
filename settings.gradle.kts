@@ -6,3 +6,5 @@ include("preflight-api", "preflight-plugin", "preflight-example", "preflight-upg
 include("livetest-fixture", "livetest-dependent")
 project(":livetest-fixture").projectDir = file("test/live/fixture")
 project(":livetest-dependent").projectDir = file("test/live/dependent")
+include("livetest-upgrade")
+project(":livetest-upgrade").projectDir = file("test/live/upgrade-fixtures")

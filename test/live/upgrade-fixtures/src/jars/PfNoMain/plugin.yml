@@ -1,0 +1,5 @@
+name: PfNoMain
+version: '0.0.0-test'
+main: com.extantape.preflight.livetest.upgrade.NotInThisJar
+api-version: '26.1'
+description: Test-only. Names a main class the jar doesn't have, so it never loads. Never install it on a real server.

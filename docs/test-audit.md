@@ -2,6 +2,38 @@
 
 Kept by this repo's owning session (Minecraft: Plugins Lead), per `~/Code/CLAUDE.md`, "Test self-audits". Newest first.
 
+## 2026-11-11: preflight-upgrade's live checks, in the repo
+
+The first upgrade live checks ran from a scratch folder that's gone, so nobody could rerun them. `test/live/upgrade.mjs` replaces them. It runs the released CLI jar against a made-up server folder that a real Paper jar booted once to make its worlds, and lets the tool boot its own copies. Everything lives in a fresh temp folder, which an exit handler deletes, pass or fail. Four test-only plugins, built from `test/live/upgrade-fixtures`, fail in different ways: `PfBadApi` (api-version 99.0), `PfNoMain` (a main class the jar lacks), `PfNeedsBad` (`depend` on PfBadApi) and `PfChainEnd` (`paper-plugin.yml`, requires PfNeedsBad). `test/live/HoldLock.java` holds a world's `session.lock` the way a running server does.
+
+Results: 94/95 on a server made with 26.1.2 and checked on 26.1.2 and 94/95 on a server made with 26.1.2 and checked on 26.3, a real upgrade. The one failure is a possible bug, under Gaps.
+
+### Each promise in docs/upgrade.md, and its check
+
+- **Check, all clear:** exit 0, status `all-clear`, nothing off or blocked; the copy is made next to the server and deleted afterwards; the real server folder is byte-for-byte unchanged.
+- **Links are copied as real files:** the server's first world is a link to a folder outside it, and a second world's `level.dat` is a linked file. While the check runs, the copy's world is seen as a real folder, never a link; afterwards every region file and `level.dat` of the real worlds has the same sha256.
+- **Broken plugins and the whole required-by chain:** exit 10, status `switch-off`; all four fixtures are offered, the two that didn't load say so, `PfNeedsBad` is off because of PfBadApi and `PfChainEnd` because of PfNeedsBad; the good plugins aren't offered; each entry names its jar and that jar's real sha256. The text plan lists them too.
+- **Never-off rules:** a rule (in lower case) on PfNeedsBad makes the plan `wait`, exit 11, with the rule and the reason under `blocked`; `recheck` lists only installed plugins; `apply` refuses the plan.
+- **Check stops before copying (exit 12, `stop`, no copy, server untouched):** a plugin jar as `--paper`; a made-up paperclip jar for 1.21.4; no `eula.txt` (moved aside, never written); a rules file that's broken JSON, an unknown format, or unreadable (mode 000); a config naming MySQL, PostgreSQL (nested under `storage:`) or MongoDB. With `--allow-shared-database`, the check runs and the plan warns.
+- **Apply refuses (exit 13, server untouched):** no `--yes` with stdin closed, and with `yes` piped in but no terminal; a plan for another folder or a missing one; a status that doesn't match the contents; a jar changed (one byte appended) or gone since the check; a `.jar.disabled` already there; an all-clear plan; a wait plan; the same plan applied twice; a held `session.lock` with nothing on the port; a running Paper server on the port.
+- **Apply:** exit 0; the four jars become `.jar.disabled` with the same bytes; good jars and everything outside `plugins/` unchanged; `switched-off.json` lists the four with why, date, target and restore point; one restore point zip holding every jar and a `README.txt` whose sha256s match the originals, and each jar in the zip is byte-for-byte the original.
+- **Status:** `--json` has the documented keys, says stopped, lists the four and one restore point; it says running when a lock is held or the port answers. The text form says the same.
+- **Restore:** a name matched ignoring case puts one back; a name the tool didn't switch off is refused; without `--yes` nothing changes; a plugin whose jar name is taken stays off, says so, exits 13, and the newer jar isn't touched; `--all` puts the rest back, and the plugins folder then matches what it was before apply, byte for byte.
+- **JSON and exit codes:** stdout is only the JSON plan and progress goes to stderr; every documented key is there, with format 1, the tool version, the server's real path, an ISO time, the full target and the Preflight block; a stop plan has `stop` and `target.file`. Exit codes 0, 2 (an unknown option, apply without `--plan`), 10, 11, 12 and 13 are each seen.
+
+### Gaps
+
+- **Possible bug: apply leaves files behind when it refuses a running server.** With a world's `session.lock` held and no state folder yet, apply refuses with the right reason but has created `plugins/Preflight/`, `plugins/Preflight/upgrade/` and an empty `plugins/Preflight/upgrade/.lock` first. `Switcher.apply` takes its own lock (which creates them) before `refuseIfRunning`. docs/upgrade.md says it refuses "with nothing changed". The check is left failing; the fix is the lead's call (check liveness before creating the lock, or say so in the docs).
+
+### Skipped, with reasons
+
+- **Plugins switched off in the copy (Discord bridges and so on) and "Not checked".** The list is matched by real plugins' names, so a fixture would have to pose as one. Unit tests cover it (`givenCopyIsPreparedAndKept`, `anythingThatCantBeJudgedOffersNothing`).
+- **`--copy`, `--exclude`, `--work-dir`, leftover copies, a copy that hangs, and a report that's missing, unfinished or from an old Preflight.** Covered by FlowTest with FakePaper. Nothing about them depends on a real Paper.
+- **Preflight's own server checks failing.** A real Paper can't be made to fail them on purpose without a broken jar; covered by PlanTest.
+- **A rename failing part-way during apply.** It can't be forced on a real filesystem without root tricks; the code puts renamed jars back.
+- **26.2.** Run on 26.1.2 and 26.3 only, as asked.
+- **Network.** Each Paper boot, including the tool's own copies (which leave out `cache/`), has paperclip fetch the official Mojang server jar. The game ports are only ever on 127.0.0.1.
+
 ## 2026-11-10: the live scenarios, in the repo
 
 The first audit's main gap is closed. `test/live/run.mjs` runs the five scenarios on throwaway Paper servers, one at a time, with two test-only plugins (`test/live/fixture`, old-style `plugin.yml` with `softdepend`; `test/live/dependent`, `paper-plugin.yml` requiring the first) and a mineflayer bot for logins. 17/17 on Paper 26.1.2:

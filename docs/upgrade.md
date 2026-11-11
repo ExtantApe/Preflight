@@ -161,3 +161,7 @@ Everything the tool keeps is plain text or a plain zip, under `<server>/plugins/
 - The list of plugins that talk to the outside world is fixed. A plugin it doesn't know can still reach outside services from the copy.
 - Database detection reads only each plugin's `config.yml`, `config.yaml` or `settings.yml`.
 - Worlds aren't in the restore point.
+
+## Live checks
+
+`test/live/upgrade.mjs` checks the promises on this page against real Paper servers in a temp folder, which it deletes when it ends: `./gradlew build`, then `node test/live/upgrade.mjs` with the variables listed at the top of that file. [test-audit.md](test-audit.md) maps each promise to its check.

@@ -119,6 +119,8 @@ You don't need Preflight installed on the server to use it. Some details:
 
 Unit tests run with `./gradlew build`. The live scenarios in `test/live/run.mjs` boot throwaway Paper servers on 127.0.0.1 with two test-only plugins and a bot that only logs in: a clean run, logins held during the tests, a lockdown and `/preflight unlock`, `DISABLE_PLUGIN`, and `SHUTDOWN`. Instructions are at the top of that file.
 
+`test/live/upgrade.mjs` runs the real `preflight-upgrade` jar against a made-up server that a real Paper jar has booted, in a temp folder that's deleted afterwards: an all-clear check, broken plugins and their dependents, a never-off rule, every refusal in [docs/upgrade.md](docs/upgrade.md), apply, status and restore. `PF_TEST_FROM` and `PF_TEST_PAPER` pick the version the server is made with and the one it's checked on. Instructions are at the top of that file.
+
 ## Limitations
 
 - **No simulated players.** The Bukkit API can't create one, so join, chat, and player-action flows aren't covered.
