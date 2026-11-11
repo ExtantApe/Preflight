@@ -1,0 +1,6 @@
+name: PfNeedsBad
+version: '0.0.0-test'
+main: com.extantape.preflight.livetest.upgrade.QuietPlugin
+api-version: '26.1'
+depend: [PfBadApi]
+description: Test-only. Hard-depends on PfBadApi, which never loads. Never install it on a real server.

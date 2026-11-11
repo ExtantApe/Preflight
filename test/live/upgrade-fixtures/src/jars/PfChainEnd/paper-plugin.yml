@@ -1,0 +1,10 @@
+name: PfChainEnd
+version: '0.0.0-test'
+main: com.extantape.preflight.livetest.upgrade.QuietPlugin
+api-version: '26.1'
+description: Test-only. Requires PfNeedsBad in paper-plugin.yml, the end of a required-by chain. Never install it on a real server.
+dependencies:
+  server:
+    PfNeedsBad:
+      load: BEFORE
+      required: true

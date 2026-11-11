@@ -1,0 +1,5 @@
+name: PfBadApi
+version: '0.0.0-test'
+main: com.extantape.preflight.livetest.upgrade.QuietPlugin
+api-version: '99.0'
+description: Test-only. Asks for an api-version no Paper has, so it never loads. Never install it on a real server.

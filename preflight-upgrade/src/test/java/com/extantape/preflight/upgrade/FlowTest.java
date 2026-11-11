@@ -337,6 +337,7 @@ class FlowTest {
         }
         assertFalse(ServerFolder.liveness(server).running(), "stopped again afterwards");
         assertTrue(Files.exists(plugins.resolve("BrokenThing-2.jar")), "nothing moved while it ran");
+        assertFalse(Files.exists(plugins.resolve("Preflight/upgrade/.lock")), "a refusal changes nothing, not even a lock file");
     }
 
     @Test
