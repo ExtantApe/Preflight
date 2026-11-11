@@ -6,7 +6,7 @@ Kept by this repo's owning session (Minecraft: Plugins Lead), per `~/Code/CLAUDE
 
 The first upgrade live checks ran from a scratch folder that's gone, so nobody could rerun them. `test/live/upgrade.mjs` replaces them. It runs the released CLI jar against a made-up server folder that a real Paper jar booted once to make its worlds, and lets the tool boot its own copies. Everything lives in a fresh temp folder, which an exit handler deletes, pass or fail. Four test-only plugins, built from `test/live/upgrade-fixtures`, fail in different ways: `PfBadApi` (api-version 99.0), `PfNoMain` (a main class the jar lacks), `PfNeedsBad` (`depend` on PfBadApi) and `PfChainEnd` (`paper-plugin.yml`, requires PfNeedsBad). `test/live/HoldLock.java` holds a world's `session.lock` the way a running server does.
 
-Results: 94/95 on a server made with 26.1.2 and checked on 26.1.2 and 94/95 on a server made with 26.1.2 and checked on 26.3, a real upgrade. The one failure is a possible bug, under Gaps.
+Results: 95/95 on a server made with 26.1.2 and checked on 26.3, a real upgrade, after the fix below. Before it, both 26.1.2 and 26.3 were 94/95.
 
 ### Each promise in docs/upgrade.md, and its check
 
@@ -23,7 +23,11 @@ Results: 94/95 on a server made with 26.1.2 and checked on 26.1.2 and 94/95 on a
 
 ### Gaps
 
-- **Possible bug: apply leaves files behind when it refuses a running server.** With a world's `session.lock` held and no state folder yet, apply refuses with the right reason but has created `plugins/Preflight/`, `plugins/Preflight/upgrade/` and an empty `plugins/Preflight/upgrade/.lock` first. `Switcher.apply` takes its own lock (which creates them) before `refuseIfRunning`. docs/upgrade.md says it refuses "with nothing changed". The check is left failing; the fix is the lead's call (check liveness before creating the lock, or say so in the docs).
+- **Fixed: apply and restore left a lock file behind when they refused a running server.**
+  - With a world's `session.lock` held, `apply` refused for the right reason, but it had already created `plugins/Preflight/upgrade/.lock`. Its own lock was taken before `refuseIfRunning`.
+  - Both now check before taking the lock, and again once they hold it.
+  - `FlowTest.refusesWhileTheServerRuns` now also asserts that no lock file appears. It fails without the fix.
+  - The live check passes.
 
 ### Skipped, with reasons
 

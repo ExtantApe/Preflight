@@ -157,6 +157,9 @@ final class Switcher {
 
     /** @return the restore point written before anything moved */
     Path apply(Plan plan) throws Refused, IOException {
+        // Checked before the lock too, so a refusal leaves the server exactly as it was: the lock file is a change.
+        checkPlan(plan);
+        refuseIfRunning();
         try (Held ignored = lock()) {
             checkPlan(plan);
             refuseIfRunning();
@@ -205,6 +208,7 @@ final class Switcher {
      * left off, and says so; nothing is overwritten.
      */
     List<Restored> restore(List<String> names) throws Refused, IOException {
+        refuseIfRunning(); // before the lock, so a refusal changes nothing
         try (Held ignored = lock()) {
             refuseIfRunning();
             List<Entry> entries = new ArrayList<>(switchedOff());
