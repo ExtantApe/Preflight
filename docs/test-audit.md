@@ -2,6 +2,11 @@
 
 Kept by this repo's owning session (Minecraft: Plugins Lead), per `~/Code/CLAUDE.md`, "Test self-audits". Newest first.
 
+## 2026-11-23: the server app's new folder name (0.3.1)
+- Promises: a check's copy leaves out the server app's own folder, so the copy never carries the app's state or claims its backups. The app is being renamed, so both folder names are skipped.
+- Covered: FlowTest's copy test now creates `.leafjuice/` and `.gilamonster/` with a file in each and checks neither is copied, next to the existing logs, session.lock, restore-point and exclude checks.
+- Gaps skipped (and why): no live rerun; the change is one entry in a fixed skip list, and the copy test runs the same code path as a live check.
+
 ## 2026-11-11: preflight-upgrade's live checks, in the repo
 
 The first upgrade live checks ran from a scratch folder that's gone, so nobody could rerun them. `test/live/upgrade.mjs` replaces them. It runs the released CLI jar against a made-up server folder that a real Paper jar booted once to make its worlds, and lets the tool boot its own copies. Everything lives in a fresh temp folder, which an exit handler deletes, pass or fail. Four test-only plugins, built from `test/live/upgrade-fixtures`, fail in different ways: `PfBadApi` (api-version 99.0), `PfNoMain` (a main class the jar lacks), `PfNeedsBad` (`depend` on PfBadApi) and `PfChainEnd` (`paper-plugin.yml`, requires PfNeedsBad). `test/live/HoldLock.java` holds a world's `session.lock` the way a running server does.

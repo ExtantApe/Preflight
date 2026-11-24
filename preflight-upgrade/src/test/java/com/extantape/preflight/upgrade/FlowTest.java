@@ -53,6 +53,10 @@ class FlowTest {
         Files.writeString(server.resolve("world/session.lock"), "");
         Files.createDirectories(server.resolve("logs"));
         Files.writeString(server.resolve("logs/latest.log"), "old log");
+        for (String app : List.of(".leafjuice", ".gilamonster")) {
+            Files.createDirectories(server.resolve(app));
+            Files.writeString(server.resolve(app + "/server.json"), "{}");
+        }
         for (String jar : List.of("MadeUpCore.jar", "BrokenThing-2.jar", "NeedsBroken.jar", "NeedsNeeds.jar",
                 "FailsSmoke.jar", "WarnsOnly.jar", "SoftOnBroken.jar")) {
             pluginJar(plugins.resolve(jar), "plugin.yml", "name: " + jar.replace(".jar", "").replace("-2", "") + "\nversion: 1\n");
@@ -127,6 +131,8 @@ class FlowTest {
             assertTrue(Files.exists(copy.resolve(Check.MARKER)));
             assertFalse(Files.exists(copy.resolve("logs")), "no old logs, so Preflight reads only this boot's");
             assertFalse(Files.exists(copy.resolve("world/session.lock")));
+            assertFalse(Files.exists(copy.resolve(".leafjuice")), "not the server app's folder (old name)");
+            assertFalse(Files.exists(copy.resolve(".gilamonster")), "not the server app's folder (new name)");
             assertFalse(Files.exists(copy.resolve(Switcher.STATE_DIR)), "not this tool's own restore points");
             assertFalse(Files.exists(copy.resolve("backups")), "nor anything excluded");
             assertEquals(copy.getParent().toRealPath(), work.toRealPath());

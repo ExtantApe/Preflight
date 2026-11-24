@@ -40,9 +40,9 @@ import java.util.stream.Stream;
  * be running. The copy is deleted afterwards, unless the caller made it.
  */
 final class Check {
-    /** Paths left out of the copy: logs, caches for the old version, and this tool's own state. */
+    /** Paths left out of the copy: logs, caches for the old version, the server app's folder under its old and new names, and this tool's own state. */
     static final List<String> SKIPPED = List.of(
-            "logs", "crash-reports", "cache", "versions", ".leafjuice", "plugins/.paper-remapped",
+            "logs", "crash-reports", "cache", "versions", ".leafjuice", ".gilamonster", "plugins/.paper-remapped",
             "plugins/Preflight/upgrade", "plugins/Preflight/report.xml", "plugins/Preflight/report.xml.partial");
     static final String MARKER = ".preflight-upgrade-copy";
     private static final long SPARE_BYTES = 2L * 1024 * 1024 * 1024;

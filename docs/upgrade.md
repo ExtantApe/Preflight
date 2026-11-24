@@ -9,7 +9,7 @@ A Preflight pass means a plugin starts, not that it works. Try the important one
 ## Check
 
 ```bash
-java -jar preflight-upgrade-0.3.0.jar check --server /path/to/server --paper /path/to/paper-26.3-244.jar
+java -jar preflight-upgrade-0.3.1.jar check --server /path/to/server --paper /path/to/paper-26.3-244.jar
 ```
 
 1. Copies the server to a folder next to it, named `<server>.preflight-check-<time>`. A different place can be set with `--work-dir`. Logs, old-version caches and this tool's own files are left out. Links are copied as real files, so the copy can never open the real worlds.
@@ -58,8 +58,8 @@ It stops without a plan, and says why, when:
 ## Apply
 
 ```bash
-java -jar preflight-upgrade-0.3.0.jar check --server /path/to/server --paper paper.jar --json > plan.json
-java -jar preflight-upgrade-0.3.0.jar apply --server /path/to/server --plan plan.json
+java -jar preflight-upgrade-0.3.1.jar check --server /path/to/server --paper paper.jar --json > plan.json
+java -jar preflight-upgrade-0.3.1.jar apply --server /path/to/server --plan plan.json
 ```
 
 It shows what it will switch off and asks you to type `yes`. `--yes` skips the question, for a tool that has already asked a person. Without a terminal and without `--yes`, it refuses. It refuses, with nothing changed, when:
@@ -77,8 +77,8 @@ The restore point covers only plugin jars. **Worlds aren't backed up by this too
 ## Restore
 
 ```bash
-java -jar preflight-upgrade-0.3.0.jar restore --server /path/to/server --plugin Name
-java -jar preflight-upgrade-0.3.0.jar restore --server /path/to/server --all
+java -jar preflight-upgrade-0.3.1.jar restore --server /path/to/server --plugin Name
+java -jar preflight-upgrade-0.3.1.jar restore --server /path/to/server --all
 ```
 
 Switches plugins this tool switched off back on, one at a time, only while the server is stopped. Names match ignoring case. If a jar with the same name is already back in `plugins/`, for example a newer version you installed, that plugin is left as it is and says so. Nothing is overwritten.
@@ -86,7 +86,7 @@ Switches plugins this tool switched off back on, one at a time, only while the s
 ## Status
 
 ```bash
-java -jar preflight-upgrade-0.3.0.jar status --server /path/to/server [--json]
+java -jar preflight-upgrade-0.3.1.jar status --server /path/to/server [--json]
 ```
 
 Shows whether the server is running, what this tool has switched off and why, and the restore points.
@@ -123,7 +123,7 @@ Everything the tool keeps is plain text or a plain zip, under `<server>/plugins/
 ```json
 {
   "format": 1,
-  "tool": "0.3.0",
+  "tool": "0.3.1",
   "server": "/absolute/path/to/server",
   "checkedAt": "2026-11-08T16:00:00Z",
   "target": {"file": "paper-26.3-244.jar", "brand": "Paper", "minecraft": "26.3", "build": 244, "version": "26.3-244-35a2d15 (MC: 26.3)"},
@@ -133,7 +133,7 @@ Everything the tool keeps is plain text or a plain zip, under `<server>/plugins/
   "notChecked": [{"name": "DiscordSRV", "why": "Off in the test copy, so it can't reach anything outside. It wasn't checked."}],
   "warnings": ["…"],
   "recheck": [{"plugin": "…", "note": "…"}],
-  "preflight": {"version": "0.3.0", "onFailure": "WARN", "serverChecks": "passed"}
+  "preflight": {"version": "0.3.1", "onFailure": "WARN", "serverChecks": "passed"}
 }
 ```
 
